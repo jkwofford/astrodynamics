@@ -1,0 +1,586 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{physics}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Lagrange Planetary Equations}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Math}
+\subsection{Basis Vectors as Partial Derivatives}
+
+Let \( (q^1, q^2, \dots, q^n) \) be a smooth coordinate system on a manifold or region of space.
+
+In differential geometry, the basis vectors of the tangent space at each point are given by:
+
+\[
+\left\{ \frac{\partial}{\partial q^1}, \frac{\partial}{\partial q^2}, \dots, \frac{\partial}{\partial q^n} \right\}
+\]
+
+Each \( \frac{\partial}{\partial q^i} \) is a directional derivative operator—it tells us how a function changes as we move in the direction of increasing \( q^i \), with all other coordinates held constant.
+
+\subsubsection*{Example:}
+
+In Cartesian space \( \mathbb{R}^3 \), with coordinates \( (x, y, z) \), the tangent basis is:
+
+\[
+\left\{ \frac{\partial}{\partial x}, \frac{\partial}{\partial y}, \frac{\partial}{\partial z} \right\}
+\]
+
+If \( f(x, y, z) = x^2 y + z \), then:
+
+\[
+\frac{\partial}{\partial y} f = x^2, \quad \text{which measures change of } f \text{ in the } y \text{ direction}.
+\]
+
+---
+
+\subsection{The Gradient is a Covector}
+
+Let \( f: \mathbb{R}^n \to \mathbb{R} \) be a smooth scalar function. The gradient of \( f \) is the covector (or 1-form):
+
+\[
+df = \sum_{i=1}^n \frac{\partial f}{\partial q^i} \, dq^i
+\]
+
+This is not a vector—it is a **linear functional** that takes a vector and returns a scalar: the directional derivative of \( f \) in that direction.
+
+Given a tangent vector:
+
+\[
+\mathbf{v} = \sum_{i=1}^n v^i \frac{\partial}{\partial q^i}
+\]
+
+the gradient acts on \( \mathbf{v} \) via:
+
+\[
+df(\mathbf{v}) = \sum_{i=1}^n \frac{\partial f}{\partial q^i} v^i
+\]
+
+\subsubsection*{Example:}
+
+Let \( f(x, y) = x^2 + 3xy \), and let \( \mathbf{v} = 4 \frac{\partial}{\partial x} + 1 \frac{\partial}{\partial y} \). Then:
+
+\[
+df = \left(2x + 3y\right) dx + 3x \, dy
+\]
+\[
+df(\mathbf{v}) = (2x + 3y)(4) + (3x)(1) = 8x + 12y + 3x = 11x + 12y
+\]
+
+This is the rate of change of \( f \) in the direction \( \mathbf{v} \).
+\subsection{The Total Derivative}
+
+Suppose \( f \) depends on time both explicitly and through coordinates that are functions of time:
+
+\[
+f = f(q^1(t), q^2(t), \dots, q^n(t), t)
+\]
+
+Then the total derivative of \( f \) with respect to time is:
+
+\[
+\frac{df}{dt} = \sum_{i=1}^n \frac{\partial f}{\partial q^i} \cdot \frac{dq^i}{dt} + \frac{\partial f}{\partial t}
+\]
+
+This can be expressed as:
+
+\[
+\frac{df}{dt} = df\left( \frac{dq}{dt} \right)
+\]
+
+Where:
+\begin{itemize}
+  \item \( df \) is the covector (gradient) of \( f \)
+  \item \( \frac{dq}{dt} = \left( \frac{dq^1}{dt}, \dots, \frac{dq^n}{dt}, 1 \right) \) is the velocity vector in the extended coordinate space
+\end{itemize}
+
+\subsection*{Example:}
+
+Let:
+\[
+f(c_1, c_2, t) = c_1^2 + 3c_2 + \sin(t), \quad c_1(t) = t^2, \quad c_2(t) = e^t
+\]
+
+Then:
+
+\[
+\frac{df}{dt} = \frac{\partial f}{\partial c_1} \frac{dc_1}{dt} + \frac{\partial f}{\partial c_2} \frac{dc_2}{dt} + \frac{\partial f}{\partial t}
+\]
+
+Compute each term:
+
+\[
+\frac{\partial f}{\partial c_1} = 2c_1 = 2t^2, \quad \frac{dc_1}{dt} = 2t
+\]
+\[
+\frac{\partial f}{\partial c_2} = 3, \quad \frac{dc_2}{dt} = e^t
+\]
+\[
+\frac{\partial f}{\partial t} = \cos(t)
+\]
+
+So the total derivative is:
+
+\[
+\frac{df}{dt} = (2t^2)(2t) + 3e^t + \cos(t) = 4t^3 + 3e^t + \cos(t)
+\]
+
+This is the rate of change of \( f \) with respect to time, accounting for all dependencies.
+
+\subsection{The Differential \( df \) as a Covector}
+
+Let \( f = f(q^1, \dots, q^n, t) \) be a smooth scalar function on a coordinate chart \( (q^1, \dots, q^n, t) \). Then the differential (gradient) of \( f \) is:
+
+\[
+df = \sum_{i=1}^n \frac{\partial f}{\partial q^i} \, dq^i + \frac{\partial f}{\partial t} \, dt
+\]
+
+This is a \textbf{covector} or \textbf{1-form}—a linear object that acts on vectors to produce real numbers.
+
+---
+
+\subsection{The Velocity Vector \( \frac{dq}{dt} \)}
+
+Suppose each coordinate depends on time, i.e., \( q^i = q^i(t) \). Then the system traces out a curve in the \( (q^1, \dots, q^n, t) \) space. The velocity vector along this curve is:
+
+\[
+\frac{dq}{dt} = \sum_{i=1}^n \frac{dq^i}{dt} \, \frac{\partial}{\partial q^i} + \frac{\partial}{\partial t}
+\]
+
+This is a tangent vector to the path at a given point.
+
+---
+
+\subsection{Total Derivative as Covector Acting on Vector}
+
+The total derivative of \( f \) with respect to time is:
+
+\[
+\frac{df}{dt} = df\left( \frac{dq}{dt} \right)
+\]
+
+That is, the covector \( df \) acts on the velocity vector \( \frac{dq}{dt} \) to produce a scalar.
+
+Evaluating this pairing gives:
+
+\[
+\frac{df}{dt} = \sum_{i=1}^n \frac{\partial f}{\partial q^i} \cdot \frac{dq^i}{dt} + \frac{\partial f}{\partial t}
+\]
+
+This is the familiar expression for the total time derivative of \( f \), accounting for both the explicit and implicit time dependence.
+
+\begin{itemize}
+    \item \( df \) is a covector field—it tells you how fast \( f \) changes in each coordinate direction.
+    \item \( \frac{dq}{dt} \) is the direction the system is moving through space and time.
+    \item \( \frac{df}{dt} \) is the rate of change of \( f \) along the system's actual path. It is a \textbf{scalar}.
+\end{itemize}
+
+
+\subsection{Example}
+
+Let:
+
+\[
+f(c_1, c_2, t) = c_1^2 + 3c_2 + \sin(t), \quad c_1(t) = t^2, \quad c_2(t) = e^t
+\]
+
+Then:
+
+\[
+\frac{df}{dt} = \frac{\partial f}{\partial c_1} \cdot \frac{dc_1}{dt} + \frac{\partial f}{\partial c_2} \cdot \frac{dc_2}{dt} + \frac{\partial f}{\partial t}
+\]
+
+Compute each term:
+
+\[
+\frac{\partial f}{\partial c_1} = 2c_1 = 2t^2, \quad \frac{dc_1}{dt} = 2t
+\]
+\[
+\frac{\partial f}{\partial c_2} = 3, \quad \frac{dc_2}{dt} = e^t
+\]
+\[
+\frac{\partial f}{\partial t} = \cos(t)
+\]
+
+Putting it together:
+
+\[
+\frac{df}{dt} = (2t^2)(2t) + 3e^t + \cos(t) = 4t^3 + 3e^t + \cos(t)
+\]
+
+This is the total rate of change of \( f \) with respect to time, accounting for all dependencies.
+
+\newpage
+
+\section{Perturbations}
+
+This section follows Chapter XI: Variation of Arbitrary Constants in \textit{Methods of Celestial Mechanics} by Brouwer and Clemence.
+
+In the case that a body only moves under the influence of a central gravitational force, the equation of motion gives us Keplerian motion. However, real celestial bodies are influenced by other effects such as additional gravitating bodies, or oblateness which create additional perturbing accelerations.
+
+In \textit{Applied Orbit Perturbation and Maintenance} by Chao and Hoots, eqaution 2.1 lists the general form of the equation of motion with perturbations can be expresssed in ECI Cartesian Coordinates as:
+
+\begin{equation}
+    \frac{d^2 \vec{r}}{dt^2} = \vec{a}_{gravity} +  \vec{a}_{3rd} +  \vec{a}_{SRP} +  \vec{a}_{D} +  \vec{a}_{sf}
+\end{equation}
+
+where $\vec{a}_{gravity}$ is the acceleration (per unit mass) resulting from gravity of the central body. The components of $ \vec{a}_{gravity} $ are $\{\frac{\partial \Phi}{\partial x}, \frac{\partial \Phi}{\partial y, }, \frac{\partial \Phi}{\partial z}\}$. THe perturbing accelerations:
+
+\begin{itemize}
+    \item $\vec{a}_{3rd}$ - gravity as a result of the third body\\
+    \item  $\vec{a}_{SRP}$ - solar radiation pressure \\
+    \item  $\vec{a}_{D}$  - atmospheric drag effects \\
+    \item $\vec{a}_{sf}$ - sum of other small forces causing acceleration
+\end{itemize}
+
+The last value $\vec{a}_{sf}$ is 
+
+\begin{equation}
+\vec{a}_{gf} = \text{[solid tides]} + \text{[ocean tides]} + \vec{a}_{rel} + \vec{a}_{ir} + \vec{a}_{op} + \vec{a}_e + \vec{a}_s
+\end{equation}
+
+\noindent
+where 
+\begin{itemize}
+    \item \( \vec{a}_{rel} \) results from the relativistic effects \\
+    \item \( \vec{a}_{ir} \) results from Earth radiation (infrared) \\ 
+    \item \( \vec{a}_{op} \) results from Earth albedo (optical) \\  
+    \item \( \vec{a}_e \) and \( \vec{a}_s \) result from Earth and solar Yarkovsky forces, respectively.  
+\end{itemize}
+
+\noindent In the absence of perturbing forces, the motion of a body is completely described by six constants of integration:
+
+\[
+c_1, c_2, \dots, c_6
+\]
+
+These are typically chosen to be orbital elements $\{a, e, i, \omega, \Omega, f\}$ or whatever set you choose (could be equinoctial for example). The position and velocity of the body at any time \( t \) are then given by smooth functions of these constants and time:
+
+\begin{equation}
+\begin{aligned}
+x &= f_1(c_1, c_2, \dots, c_6, t), &\quad \dot{x} &= g_1(c_1, c_2, \dots, c_6, t), \\
+y &= f_2(c_1, c_2, \dots, c_6, t), &\quad \dot{y} &= g_2(c_1, c_2, \dots, c_6, t), \\
+z &= f_3(c_1, c_2, \dots, c_6, t), &\quad \dot{z} &= g_3(c_1, c_2, \dots, c_6, t)
+\end{aligned}
+\end{equation}
+
+which describe Keplerian motion. Since the elements \( c_k \) are constant in the unperturbed problem, the velocity components are simply the partial derivatives of the position functions with respect to time:
+
+\begin{equation}
+g_k = \frac{\partial f_k}{\partial t}, \quad \text{for } k = 1, 2, 3
+\end{equation}
+
+\noindent In the presence of some perturbing force are, the full equations of motion are:
+\begin{equation}
+\ddot{x} + \frac{\mu x}{r^3} = X, \quad
+\ddot{y} + \frac{\mu y}{r^3} = Y, \quad
+\ddot{z} + \frac{\mu z}{r^3} = Z
+\end{equation}
+where \( (X, Y, Z) \) are the ``perturbing'' accelerations per unit mass. 
+
+Assuming the perturbing accelerations are conservative, 
+
+\begin{equation}
+    \vec{F} = \vec{\nabla} R
+\end{equation}
+
+they can be written as the gradient of a scalar potential, which is called the disturbing function \( R \):
+
+\[
+X = \frac{\partial R}{\partial x}, \quad
+Y = \frac{\partial R}{\partial y}, \quad
+Z = \frac{\partial R}{\partial z}
+\]
+
+In the case of perturbed motion, we're trying to satisfy equations 5 by the values of equation 3, but obviously the set $\{c_1, ..., c_6\}$ are not constant. So now, we should derive differential equations for this variable element set. Starting with
+
+\begin{equation}
+    x = f_1(c_1, c_2, ..., c_6, t)
+\end{equation}
+
+Notice the time dependence. To compute how $x$ changes with time under time dependence, we use the chain rule. The total time derivative of \( x \) is:
+
+\begin{equation}
+    \frac{dx}{dt} = \frac{\partial f_1}{\partial t} + \sum_{j=1}^{6} \frac{\partial f_1}{\partial c_j} \cdot \frac{dc_j}{dt}
+\end{equation}
+
+The same applies for \( \frac{dy}{dt} \) and \( \frac{dz}{dt} \). To obtain the equations of motion, we now differentiate again to get the second derivatives.
+
+Applying the product rule:
+
+\begin{align*}
+\frac{d^2x}{dt^2}
+&= \frac{d}{dt}\left( \frac{\partial f_1}{\partial t} + \sum_{j=1}^{6} \frac{\partial f_1}{\partial c_j} \frac{dc_j}{dt} \right) \\
+&= \frac{\partial^2 f_1}{\partial t^2}
++ \sum_{j=1}^{6} \frac{\partial^2 f_1}{\partial c_j \partial t} \frac{dc_j}{dt}
++ \sum_{j=1}^{6} \frac{\partial f_1}{\partial c_j} \frac{d^2c_j}{dt^2}
++ \sum_{j=1}^{6} \sum_{k=1}^{6} \frac{\partial^2 f_1}{\partial c_j \partial c_k} \frac{dc_j}{dt} \frac{dc_k}{dt}
+\end{align*}
+
+Similar expressions hold for \( \ddot{y} \) and \( \ddot{z} \). These are then substituted into the equations of motion, which (assuming the perturbing accelerations are conservative) take the form:
+
+\begin{align*}
+\ddot{x} - \frac{\mu x}{r^3} &= X = \frac{\partial R}{\partial x} \\
+\ddot{y} - \frac{\mu y}{r^3} &= Y = \frac{\partial R}{\partial y} \\
+\ddot{z} - \frac{\mu z}{r^3} &= Z = \frac{\partial R}{\partial z}
+\end{align*}
+
+Substituting the full expressions for \( \ddot{x}, \ddot{y}, \ddot{z} \) into these equations yields a system of 3 second-order differential equations involving the quantities \( \frac{dc_j}{dt} \) and \( \frac{d^2c_j}{dt^2} \). These equations can be symbolically written as:
+
+\[
+F_x\left(c_j, \frac{dc_j}{dt}, \frac{d^2c_j}{dt^2}\right) = \frac{\partial R}{\partial x}, \quad \text{and similarly for } y \text{ and } z.
+\]
+
+At this point, we are faced with a system of only 3 equations but 6 unknowns: \( \frac{dc_1}{dt}, \dots, \frac{dc_6}{dt} \). Therefore, the system is \textbf{underdetermined}. There are infinitely many ways to choose the six functions \( c_j(t) \) to satisfy the 3 equations of motion.
+
+To make the system uniquely solvable, we must impose 3 additional gauge conditions.
+
+\[
+\sum_j \frac{\partial f_1}{\partial c_j} \cdot \frac{dc_j}{dt} = 0
+\]
+\[
+\sum_j \frac{\partial f_2}{\partial c_j} \cdot \frac{dc_j}{dt} = 0
+\]
+\[
+\sum_j \frac{\partial f_3}{\partial c_j} \cdot \frac{dc_j}{dt} = 0
+\]
+
+These choices eliminate the \( \frac{dc_j}{dt} \) terms from the first derivatives of the position coordinates, giving:
+
+\[
+\frac{dx}{dt} = \frac{\partial f_1}{\partial t} = g_1, \quad
+\frac{dy}{dt} = \frac{\partial f_2}{\partial t} = g_2, \quad
+\frac{dz}{dt} = \frac{\partial f_3}{\partial t} = g_3
+\]
+
+These expressions define the \textbf{osculating elements}—at each moment, the position and velocity vectors are consistent with Keplerian motion using the instantaneous orbital elements.
+
+
+Continuing on, differentiate these expressions with respect to time again using the chain rule:
+
+\[
+\ddot{x} = \frac{d}{dt} \left( \frac{\partial f_1}{\partial t} \right)
+= \frac{\partial^2 f_1}{\partial t^2} + \sum_{j=1}^{6} \frac{\partial g_1}{\partial c_j} \cdot \frac{dc_j}{dt}
+\]
+
+\[
+\ddot{y} = \frac{\partial^2 f_2}{\partial t^2} + \sum_{j=1}^{6} \frac{\partial g_2}{\partial c_j} \cdot \frac{dc_j}{dt}
+\]
+
+\[
+\ddot{z} = \frac{\partial^2 f_3}{\partial t^2} + \sum_{j=1}^{6} \frac{\partial g_3}{\partial c_j} \cdot \frac{dc_j}{dt}
+\]
+
+These are equations (7) in the book.
+
+Recall the perturbed equations of motion:
+
+\[
+\ddot{x} + \frac{\mu x}{r^3} = X = \frac{\partial R}{\partial x}
+\]
+
+Substituting the expressions for \( \ddot{x}, \ddot{y}, \ddot{z} \) from above:
+
+\[
+\frac{\partial^2 f_1}{\partial t^2} + \frac{\mu f_1}{r^3} + \sum_{j=1}^{6} \frac{\partial g_1}{\partial c_j} \cdot \frac{dc_j}{dt} = \frac{\partial R}{\partial x}
+\]
+
+\[
+\frac{\partial^2 f_2}{\partial t^2} + \frac{\mu f_2}{r^3} + \sum_{j=1}^{6} \frac{\partial g_2}{\partial c_j} \cdot \frac{dc_j}{dt} = \frac{\partial R}{\partial y}
+\]
+
+\[
+\frac{\partial^2 f_3}{\partial t^2} + \frac{\mu f_3}{r^3} + \sum_{j=1}^{6} \frac{\partial g_3}{\partial c_j} \cdot \frac{dc_j}{dt} = \frac{\partial R}{\partial z}
+\]
+
+These are equations (8) in the book, where $r^3 = (f_1^2 + f_2^2 + f_3^2)^{\frac{3}{2}}$ since, $f_1, f_2, f_3$ are expresssions for the coordinates in terms of the time and the osculating elements at t. 
+
+
+Since \( f_1 \) is a solution of the unperturbed problem, it satisfies:
+
+\[
+\frac{\partial^2 f_1}{\partial t^2} + \frac{\mu f_1}{r^3} = 0
+\]
+
+So the first two terms cancel, and we are left with:
+
+\[
+\sum_{j=1}^6 \frac{\partial g_1}{\partial c_j} \frac{dc_j}{dt} = \frac{\partial R}{\partial x}
+\]
+
+and similarly for \( y \) and \( z \). Switching notation from \( f_k, g_k \) to \( x, y, z, \dot{x}, \dot{y}, \dot{z} \), we now collect the six first-order equations for the time derivatives \( \frac{dc_j}{dt} \):
+
+\paragraph{Lagrange Constraint Equations (Position Constraints):}
+
+\[
+\frac{\partial x}{\partial c_1} \frac{dc_1}{dt}
++ \frac{\partial x}{\partial c_2} \frac{dc_2}{dt}
++ \cdots
++ \frac{\partial x}{\partial c_6} \frac{dc_6}{dt} = 0
+\]
+
+\[
+\frac{\partial y}{\partial c_1} \frac{dc_1}{dt}
++ \frac{\partial y}{\partial c_2} \frac{dc_2}{dt}
++ \cdots
++ \frac{\partial y}{\partial c_6} \frac{dc_6}{dt} = 0
+\]
+
+\[
+\frac{\partial z}{\partial c_1} \frac{dc_1}{dt}
++ \frac{\partial z}{\partial c_2} \frac{dc_2}{dt}
++ \cdots
++ \frac{\partial z}{\partial c_6} \frac{dc_6}{dt} = 0
+\]
+
+\paragraph{Perturbed Equations of Motion (Acceleration Constraints):}
+
+\[
+\frac{\partial \dot{x}}{\partial c_1} \frac{dc_1}{dt}
++ \frac{\partial \dot{x}}{\partial c_2} \frac{dc_2}{dt}
++ \cdots
++ \frac{\partial \dot{x}}{\partial c_6} \frac{dc_6}{dt}
+= \frac{\partial R}{\partial x}
+\]
+
+\[
+\frac{\partial \dot{y}}{\partial c_1} \frac{dc_1}{dt}
++ \frac{\partial \dot{y}}{\partial c_2} \frac{dc_2}{dt}
++ \cdots
++ \frac{\partial \dot{y}}{\partial c_6} \frac{dc_6}{dt}
+= \frac{\partial R}{\partial y}
+\]
+
+\[
+\frac{\partial \dot{z}}{\partial c_1} \frac{dc_1}{dt}
++ \frac{\partial \dot{z}}{\partial c_2} \frac{dc_2}{dt}
++ \cdots
++ \frac{\partial \dot{z}}{\partial c_6} \frac{dc_6}{dt}
+= \frac{\partial R}{\partial z}
+\]
+
+These six equations, each first-order in \( \frac{dc_j}{dt} \), form the complete system known as \textbf{Equation (9)} in Brouwer \& Clemence. They describe how the osculating elements evolve in time under a perturbing potential \( R \). These six first order equations are exactly equivalent to the original second order three equations. What has been accomplished is a transformation from the old variables $\{x,y,z\}$ to the variables $\{c_1, ..., c_6\}$. This form is not convient
+
+\newpage 
+\subsection{Definition of Lagrange's Brackets}
+
+We begin with the six first-order equations from Equation (9), consisting of three position-matching constraints and three perturbed acceleration equations:
+
+\subsection*{Position Constraint Equations}
+\begin{align*}
+\sum_{j=1}^{6} \frac{\partial x}{\partial c_j} \frac{dc_j}{dt} &= 0 \\
+\sum_{j=1}^{6} \frac{\partial y}{\partial c_j} \frac{dc_j}{dt} &= 0 \\
+\sum_{j=1}^{6} \frac{\partial z}{\partial c_j} \frac{dc_j}{dt} &= 0
+\end{align*}
+
+\subsection*{Perturbed Acceleration Equations}
+\begin{align*}
+\sum_{j=1}^{6} \frac{\partial \dot{x}}{\partial c_j} \frac{dc_j}{dt} &= \frac{\partial R}{\partial x} \\
+\sum_{j=1}^{6} \frac{\partial \dot{y}}{\partial c_j} \frac{dc_j}{dt} &= \frac{\partial R}{\partial y} \\
+\sum_{j=1}^{6} \frac{\partial \dot{z}}{\partial c_j} \frac{dc_j}{dt} &= \frac{\partial R}{\partial z}
+\end{align*}
+
+To derive a new system of equations, we eliminate the individual coordinate components and instead solve directly for \( \frac{dc_k}{dt} \) by forming a linear combination of the above equations.
+
+\subsection*{Multiplication and Summation Procedure}
+
+For fixed \( k \in \{1, \dots, 6\} \), we multiply:
+
+\begin{itemize}
+  \item the first equation by \( -\dfrac{\partial \dot{x}}{\partial c_k} \),
+  \item the second by \( -\dfrac{\partial \dot{y}}{\partial c_k} \),
+  \item the third by \( -\dfrac{\partial \dot{z}}{\partial c_k} \),
+  \item the fourth by \( \dfrac{\partial x}{\partial c_k} \),
+  \item the fifth by \( \dfrac{\partial y}{\partial c_k} \),
+  \item the sixth by \( \dfrac{\partial z}{\partial c_k} \),
+\end{itemize}
+
+and add the resulting equations.
+
+\subsection*{Left-Hand Side}
+
+The left-hand side becomes:
+\[
+\sum_{j=1}^{6}
+\left[
+- \frac{\partial \dot{x}}{\partial c_k} \frac{\partial x}{\partial c_j}
+- \frac{\partial \dot{y}}{\partial c_k} \frac{\partial y}{\partial c_j}
+- \frac{\partial \dot{z}}{\partial c_k} \frac{\partial z}{\partial c_j}
++ \frac{\partial x}{\partial c_k} \frac{\partial \dot{x}}{\partial c_j}
++ \frac{\partial y}{\partial c_k} \frac{\partial \dot{y}}{\partial c_j}
++ \frac{\partial z}{\partial c_k} \frac{\partial \dot{z}}{\partial c_j}
+\right]
+\frac{dc_j}{dt}
+\]
+
+Group terms:
+\[
+\sum_{j=1}^{6}
+\left[
+\left( \frac{\partial x}{\partial c_k} \frac{\partial \dot{x}}{\partial c_j}
+- \frac{\partial x}{\partial c_j} \frac{\partial \dot{x}}{\partial c_k} \right)
++
+\left( \frac{\partial y}{\partial c_k} \frac{\partial \dot{y}}{\partial c_j}
+- \frac{\partial y}{\partial c_j} \frac{\partial \dot{y}}{\partial c_k} \right)
++
+\left( \frac{\partial z}{\partial c_k} \frac{\partial \dot{z}}{\partial c_j}
+- \frac{\partial z}{\partial c_j} \frac{\partial \dot{z}}{\partial c_k} \right)
+\right]
+\frac{dc_j}{dt}
+\]
+
+Define the \textbf{Lagrange bracket}:
+\[
+[c_j, c_k] =
+\sum_{\alpha = x, y, z}
+\left( \frac{\partial x^\alpha}{\partial c_k} \frac{\partial \dot{x}^\alpha}{\partial c_j}
+- \frac{\partial x^\alpha}{\partial c_j} \frac{\partial \dot{x}^\alpha}{\partial c_k} \right)
+\]
+
+So the left-hand side becomes:
+\[
+\sum_{j=1}^{6} [c_j, c_k] \frac{dc_j}{dt}
+\]
+
+\subsection*{Right-Hand Side}
+
+The right-hand side becomes:
+\[
+\frac{\partial x}{\partial c_k} \frac{\partial R}{\partial x}
++ \frac{\partial y}{\partial c_k} \frac{\partial R}{\partial y}
++ \frac{\partial z}{\partial c_k} \frac{\partial R}{\partial z}
+= \frac{\partial R}{\partial c_k}
+\]
+
+(using the chain rule, since \( R \) depends on \( x, y, z \) which in turn depend on the \( c_j \)).
+
+\subsection*{Final Form: Equation (10)}
+
+Putting it all together, we arrive at:
+
+\[
+\sum_{j=1}^{6} [c_j, c_k] \frac{dc_j}{dt} = \frac{\partial R}{\partial c_k}, \quad \text{for } k = 1, \dots, 6
+\]
+
+This is the compact form of \textbf{Equation (10)} in Brouwer \& Clemence, giving the evolution of the osculating elements governed by the Lagrange brackets and the disturbing function.
+
+\subsection*{Properties of the Lagrange Brackets}
+
+From the definition:
+
+\[
+[c_j, c_j] = 0, \quad
+[c_j, c_k] = -[c_k, c_j]
+\]
+
+Thus, the matrix \( [c_j, c_k] \) is antisymmetric with 15 distinct nonzero entries (since it's \( 6 \times 6 \)).
+
+
+\end{document}
