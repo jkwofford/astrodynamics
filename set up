@@ -1,0 +1,88 @@
+package hande;
+
+/**
+ * Construction of the initial CHEB tableau — a standalone, testable
+ * transcription of the initialization block of Algorithm 495
+ * (Barrodale &amp; Phillips 1975), Fortran cards CHE 690&ndash;890, plus the
+ * caller-side obligation of CHE 110&ndash;140 (storing A-transpose).
+ *
+ * Layout of the returned (n+3+1) x (m+1+1) array, 1-based like the listing
+ * (index 0 unused):
+ *
+ *   rows 1..n      : A-transpose  (row i = coefficients of unknown x_i
+ *                    across all m equations)                      [CHE 120-140]
+ *   row n+1 (NP1)  : the "ones row" — lambda, the error bound     [CHE 790]
+ *   row n+2 (NP2)  : objective row = -b                           [CHE 800]
+ *   row n+3 (NP3)  : column badges, n+j = "equation j"            [CHE 810]
+ *   col m+1 (MP1)  : row badges, i = "unknown x_i"; ones row = 0  [CHE 880, 830]
+ *
+ * ChebyshevSolver builds this same structure inline; this class exists so
+ * the setup step can be inspected and unit-tested in isolation.
+ */
+public final class ChebyshevTableau {
+
+    /** 1-based tableau, a[row][col]; row 0 and col 0 unused. */
+    public final double[][] a;
+    public final int m;      // equations
+    public final int n;      // unknowns
+    public final int np1;    // ones row index
+    public final int np2;    // objective row index
+    public final int np3;    // column-badge row index
+    public final int mp1;    // row-badge column index
+
+    private ChebyshevTableau(double[][] a, int m, int n) {
+        this.a = a;
+        this.m = m;
+        this.n = n;
+        this.np1 = n + 1;
+        this.np2 = n + 2;
+        this.np3 = n + 3;
+        this.mp1 = m + 1;
+    }
+
+    /**
+     * Build the pre-pivot tableau for the overdetermined system A x = b,
+     * with A supplied in ordinary (m x n) row-major orientation.
+     */
+    public static ChebyshevTableau build(double[][] aIn, double[] bIn) {
+        final int m = bIn.length;
+        final int n = aIn[0].length;
+        if (n > m) {
+            throw new IllegalArgumentException("need m >= n (CHE 80: N must not exceed M)");
+        }
+
+        final int np1 = n + 1;
+        final int np2 = n + 2;
+        final int np3 = n + 3;
+        final int mp1 = m + 1;
+
+        double[][] a = new double[np3 + 1][mp1 + 1];
+
+        // Caller-side obligation of the Fortran (CHE 110-140): store A-TRANSPOSE
+        // in the first n rows and m columns. Row i of the tableau = column i of A.
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                a[i][j] = aIn[j - 1][i - 1];
+            }
+        }
+
+        // DO 10 loop (CHE 780-820): ones row, objective row, column badges.
+        for (int j = 1; j <= m; j++) {
+            a[np1][j] = 1.0;          // CHE 790 — lambda's row
+            a[np2][j] = -bIn[j - 1];  // CHE 800 — objective = -b
+            a[np3][j] = n + j;        // CHE 810 — badge "equation j"
+        }
+
+        // CHE 830: the ones row wears badge 0 — neither unknown nor equation.
+        a[np1][mp1] = 0.0;
+
+        // DO 20 loop (CHE 860-890): row badges "unknown x_i".
+        // (The Fortran also zeroes X here; the solution array lives in the
+        // solver, not the tableau, so that half is omitted.)
+        for (int i = 1; i <= n; i++) {
+            a[i][mp1] = i;            // CHE 880
+        }
+
+        return new ChebyshevTableau(a, m, n);
+    }
+}
